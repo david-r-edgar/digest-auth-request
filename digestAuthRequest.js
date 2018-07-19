@@ -7,8 +7,8 @@
 var digestAuthRequest = function (method, url, username, password) {
 	var self = this;
 
-	if (typeof CryptoJS === 'undefined' && typeof require === 'function') {
-		var CryptoJS = require('crypto-js');
+	if (typeof md5 === 'undefined' && typeof require === 'function') {
+		var md5 = require('md5.js');
 	}
 
 	this.scheme = null; // we just echo the scheme, to allow for 'Digest', 'X-Digest', 'JDigest' etc
@@ -209,9 +209,9 @@ var digestAuthRequest = function (method, url, username, password) {
 	}
 	// hash response based on server challenge
 	this.formulateResponse = function() {
-		var HA1 = CryptoJS.MD5(username+':'+self.realm+':'+password).toString();
-		var HA2 = CryptoJS.MD5(method+':'+url).toString();
-		var response = CryptoJS.MD5(HA1+':'+
+		var HA1 = md5(username+':'+self.realm+':'+password).toString();
+		var HA2 = md5(method+':'+url).toString();
+		var response = md5(HA1+':'+
 			self.nonce+':'+
 			('00000000' + self.nc).slice(-8)+':'+
 			self.cnonce+':'+
